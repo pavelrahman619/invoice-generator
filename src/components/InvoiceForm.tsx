@@ -109,13 +109,13 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
               {errors.companyDetails?.name && (
                 <p className="text-red-500 text-sm">{errors.companyDetails.name.message}</p>
               )}
-              
+
               <input
                 {...register('companyDetails.address')}
                 placeholder="Address"
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              
+
               <div className="grid grid-cols-2 gap-2">
                 <input
                   {...register('companyDetails.city')}
@@ -128,7 +128,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                   className="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-2">
                 <input
                   {...register('companyDetails.zipCode')}
@@ -141,14 +141,14 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                   className="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <input
                 {...register('companyDetails.email')}
                 type="email"
                 placeholder="Email"
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              
+
               <input
                 {...register('companyDetails.phone')}
                 placeholder="Phone"
@@ -171,7 +171,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                   <p className="text-red-500 text-sm">{errors.invoiceNumber.message}</p>
                 )}
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Invoice Date</label>
                 <input
@@ -180,7 +180,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                   className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Due Date</label>
                 <input
@@ -206,13 +206,13 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
               {errors.billingInfo?.billTo && (
                 <p className="text-red-500 text-sm">{errors.billingInfo.billTo.message}</p>
               )}
-              
+
               <input
                 {...register('billingInfo.address')}
                 placeholder="Address"
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              
+
               <div className="grid grid-cols-2 gap-2">
                 <input
                   {...register('billingInfo.city')}
@@ -226,7 +226,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                 />
               </div>
             </div>
-            
+
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-2">
                 <input
@@ -240,14 +240,14 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                   className="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              
+
               <input
                 {...register('billingInfo.email')}
                 type="email"
                 placeholder="Email"
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              
+
               <input
                 {...register('billingInfo.phone')}
                 placeholder="Phone"
@@ -261,15 +261,10 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-700">Items</h2>
-            <button
-              type="button"
-              onClick={addItem}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-            >
-              Add Item
-            </button>
+            <button type="button" onClick={addItem} className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add Item</button>
+
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-gray-300">
               <thead>
@@ -293,7 +288,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                     </td>
                     <td className="border border-gray-300 p-2">
                       <input
-                        {...register(`items.${index}.quantity` as const, { 
+                        {...register(`items.${index}.quantity` as const, {
                           required: 'Quantity is required',
                           valueAsNumber: true,
                           min: { value: 0.01, message: 'Quantity must be greater than 0' }
@@ -306,7 +301,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                     </td>
                     <td className="border border-gray-300 p-2">
                       <input
-                        {...register(`items.${index}.rate` as const, { 
+                        {...register(`items.${index}.rate` as const, {
                           required: 'Rate is required',
                           valueAsNumber: true,
                           min: { value: 0, message: 'Rate must be 0 or greater' }
@@ -344,11 +339,11 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
               <span className="text-gray-600">Subtotal:</span>
               <span className="font-medium">${watch('subtotal')?.toFixed(2) || '0.00'}</span>
             </div>
-            
+
             <div className="flex justify-between items-center">
               <label className="text-gray-600">Tax Rate (%):</label>
               <input
-                {...register('taxRate', { 
+                {...register('taxRate', {
                   valueAsNumber: true,
                   min: { value: 0, message: 'Tax rate must be 0 or greater' },
                   max: { value: 100, message: 'Tax rate cannot exceed 100%' }
@@ -360,12 +355,12 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
                 className="w-20 p-1 border border-gray-300 rounded text-center"
               />
             </div>
-            
+
             <div className="flex justify-between items-center py-2 border-b">
               <span className="text-gray-600">Tax Amount:</span>
               <span className="font-medium">${watch('taxAmount')?.toFixed(2) || '0.00'}</span>
             </div>
-            
+
             <div className="flex justify-between items-center py-2 text-lg font-bold">
               <span>Total:</span>
               <span>${watch('total')?.toFixed(2) || '0.00'}</span>
@@ -388,7 +383,7 @@ const InvoiceForm: React.FC<Props> = ({ onSubmit }) => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="px-8 py-3 bg-green-600 text-white text-lg font-semibold rounded hover:bg-green-700 transition-colors"
+            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           >
             Generate Invoice
           </button>
