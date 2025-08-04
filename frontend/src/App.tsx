@@ -12,22 +12,65 @@ function App() {
       setIsGenerating(true)
       console.log('Invoice Data:', data)
       
+      // Transform data for backend
+      const backendData = {
+        company_name: data.companyDetails.name,
+        company_address: data.companyDetails.address,
+        company_city: data.companyDetails.city,
+        company_state: data.companyDetails.state,
+        company_zip_code: data.companyDetails.zipCode,
+        company_country: data.companyDetails.country,
+        company_email: data.companyDetails.email,
+        company_phone: data.companyDetails.phone,
+
+        client_name: data.billingInfo.billTo,
+        client_address: data.billingInfo.address,
+        client_city: data.billingInfo.city,
+        client_state: data.billingInfo.state,
+        client_zip_code: data.billingInfo.zipCode,
+        client_country: data.billingInfo.country,
+        client_email: data.billingInfo.email,
+        client_phone: data.billingInfo.phone,
+
+        invoice_number: data.invoiceNumber,
+        invoice_date: data.invoiceDate,
+        due_date: data.dueDate,
+        subtotal: data.subtotal,
+        tax_rate: data.taxRate,
+        tax_amount: data.taxAmount,
+        total: data.total,
+        notes: data.notes,
+        items: data.items.map(item => ({
+          description: item.description,
+          quantity: item.quantity,
+          rate: item.rate,
+          amount: item.amount
+        }))
+      }
+
+      // Save to backend
+      const response = await fetch('http://localhost:8000/api/invoices/create-from-form/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(backendData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save invoice')
+      }
+
+      const savedInvoice = await response.json()
+      console.log('Invoice saved:', savedInvoice)
+
       // Generate and download PDF
       await generateInvoicePDF(data)
-      
-      // Optional: Save to localStorage for future reference
-      const invoiceHistory = JSON.parse(localStorage.getItem('invoiceHistory') || '[]')
-      const newInvoice = {
-        ...data,
-        generatedAt: new Date().toISOString()
-      }
-      invoiceHistory.push(newInvoice)
-      localStorage.setItem('invoiceHistory', JSON.stringify(invoiceHistory))
-      
-      alert('Invoice PDF generated successfully!')
+
+      alert('Invoice created and PDF generated successfully!')
     } catch (error) {
       console.error('Error generating invoice:', error)
-      alert('Failed to generate invoice PDF. Please try again.')
+      alert('Failed to generate invoice. Please try again.')
     } finally {
       setIsGenerating(false)
     }
