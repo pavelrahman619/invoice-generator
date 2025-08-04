@@ -57,12 +57,14 @@ function App() {
         body: JSON.stringify(backendData),
       })
 
+      const responseData = await response.json()
+
       if (!response.ok) {
-        throw new Error('Failed to save invoice')
+        console.error('Backend error:', responseData)
+        throw new Error(responseData.message || `HTTP ${response.status}: Failed to save invoice`)
       }
 
-      const savedInvoice = await response.json()
-      console.log('Invoice saved:', savedInvoice)
+      console.log('Invoice saved:', responseData)
 
       // Generate and download PDF
       await generateInvoicePDF(data)
@@ -70,7 +72,7 @@ function App() {
       alert('Invoice created and PDF generated successfully!')
     } catch (error) {
       console.error('Error generating invoice:', error)
-      alert('Failed to generate invoice. Please try again.')
+      alert(`Failed to generate invoice: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsGenerating(false)
     }
